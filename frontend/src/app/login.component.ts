@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, output, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SessaoUtilizador } from './autenticacao';
+import { CARGOS } from './permissoes';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,13 @@ import { SessaoUtilizador } from './autenticacao';
             </div>
           </div>
 
+          <div class="login-field">
+            <label for="login-cargo">Cargo (modo demonstração)</label>
+            <select id="login-cargo" name="cargo" [(ngModel)]="cargo">
+              @for (opcao of cargos; track opcao.id) { <option [value]="opcao.id">{{ opcao.label }}</option> }
+            </select>
+          </div>
+
           <div class="login-row">
             <label class="login-remember"><input type="checkbox" name="lembrar" [(ngModel)]="lembrar"> Manter sessão iniciada</label>
           </div>
@@ -46,7 +54,7 @@ import { SessaoUtilizador } from './autenticacao';
           </button>
         </form>
 
-        <p class="login-hint"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Modo demonstração: qualquer utilizador com palavra-passe de 4 ou mais caracteres é aceite. A validação real será feita na fase de backend.</p>
+        <p class="login-hint"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Modo demonstração: qualquer utilizador com palavra-passe de 4 ou mais caracteres é aceite e o cargo escolhido define as permissões disponíveis. A validação real será feita na fase de backend.</p>
       </section>
     </main>
   `
@@ -59,6 +67,8 @@ export class LoginComponent implements AfterViewInit {
   utilizador = '';
   palavraPasse = '';
   lembrar = true;
+  cargo = 'ADMIN';
+  readonly cargos = CARGOS;
   readonly mostrarPasse = signal(false);
   readonly processando = signal(false);
   readonly erro = signal('');
@@ -88,7 +98,7 @@ export class LoginComponent implements AfterViewInit {
       this.entrar.emit({
         utilizador,
         nome: this.normalizarNome(utilizador),
-        cargo: 'ADMIN',
+        cargo: this.cargo,
         em: new Date().toISOString(),
         lembrar: this.lembrar
       });
