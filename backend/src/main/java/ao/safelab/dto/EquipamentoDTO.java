@@ -20,6 +20,7 @@ public class EquipamentoDTO {
 
         @NotBlank(message = "laboratorio é obrigatório")
         private String laboratorio;
+
     }
 
     @Data
