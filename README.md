@@ -100,3 +100,24 @@ src/main/java/ao/safelab/
     ├── LeituraDTO.java
     └── EquipamentoDTO.java
 ```
+
+## Frontend Angular
+
+O frontend standalone está em [`frontend/`](./frontend), com Angular 18,
+Signals, integração REST com `/api` e Web Serial para o protocolo
+`RFID:<TAG_ID>:<PORTA_ID>`.
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Por defeito, a API é `http://localhost:8080`. Para alterar a API em runtime,
+copie `frontend/.env.example` para `.env` ou defina `API_URL` no
+`docker compose`.
+
+```bash
+cd frontend
+docker compose up --build
+```
