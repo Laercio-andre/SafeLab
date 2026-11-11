@@ -21,7 +21,7 @@ import {
   registarAuditoria,
   RegistoAuditoria
 } from './definicoes';
-import { focar, prenderTab } from './foco';
+import { focar, prenderTab, soltarFundo, travarFundo } from './foco';
 import type { Page } from './tipos';
 
 type Secao = 'conta' | 'seguranca' | 'notificacoes' | 'sistema' | 'dispositivos' | 'auditoria' | 'ajuda' | 'avancado';
@@ -537,12 +537,13 @@ export class ConfiguracoesComponent {
   pedirConfirmacao(acao: Confirmacao): void {
     this.gatilho = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.confirmacao.set(acao);
-    setTimeout(() => focar(document.querySelector('.settings-body .confirm-dialog')));
+    setTimeout(() => { travarFundo(); focar(document.querySelector('.settings-body .confirm-dialog')); });
   }
 
   fecharConfirmacao(): void {
     if (!this.confirmacao()) return;
     this.confirmacao.set(null);
+    soltarFundo();
     focar(this.gatilho);
     this.gatilho = null;
   }

@@ -22,3 +22,23 @@ export function prenderTab(evento: KeyboardEvent, container: Element | null): vo
 export function focar(elemento: Element | null | undefined): void {
   if (elemento instanceof HTMLElement) elemento.focus();
 }
+
+export function travarFundo(): void {
+  const fundo = document.querySelector('.confirm-backdrop');
+  if (!fundo) return;
+  let no: Element | null = fundo;
+  while (no) {
+    const pai: Element | null = no.parentElement;
+    if (!pai || pai === document.body) break;
+    for (const irmao of Array.from(pai.children)) {
+      if (irmao !== no) irmao.setAttribute('inert', '');
+    }
+    no = pai;
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+export function soltarFundo(): void {
+  document.querySelectorAll('[inert]').forEach(el => el.removeAttribute('inert'));
+  document.body.style.overflow = '';
+}
